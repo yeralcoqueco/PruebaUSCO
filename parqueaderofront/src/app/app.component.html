@@ -1,0 +1,136 @@
+<div style="text-align:center">
+    <h1>Parqueadero</h1>
+</div>
+
+<!--CUPOS DISPONIBLES-->
+
+<div class="alert alert-success" role="alert">
+    {{cuposDisponibles}} cupos disponibles
+</div>
+
+<!-- DROPDOWN PARQUEADERO-->
+<div class="container">
+    <div class="dropdown">
+        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    Parqueadero
+  </button>
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <a (click)='consultarPuestos(item)' class="dropdown-item" href="#" *ngFor="let item of listaParqueadero">{{item.id}}</a>
+        </div>
+    </div>
+</div>
+
+
+<!-- LISTADO PUESTOS  -->
+
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th scope="col">N° Puesto</th>
+            <th scope="col">Disponibilidad</th>
+            <th></th>
+            <th></th>
+            <th scope="col">Información bicicleta</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let item of listaPuestos">
+            <th scope="row">{{item.id}}</th>
+            <th scope="row">{{item.estado && 'Ocupado' || 'Libre'}}</th>
+            <td><button class="btn btn-info" (click)=" seleccionarPuesto(item, 'ingresarBici') " data-toggle="modal" data-target="#exampleModalLong">Ocupar</button></td>
+            <td><button class="btn btn-success " (click)="seleccionarPuesto(item, 'liberar') " *ngIf="item.estado ">Liberar</button></td>
+            <td><button class="btn btn-warning " (click)="seleccionarPuesto(item, 'ver') " *ngIf="item.estado " data-toggle="modal" data-target="#exampleModal">Ver</button></td>
+        </tr>
+    </tbody>
+</table>
+
+<!-- INFORMACIÓN BICI -->}
+
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title " id="exampleModalLabel ">INFORMACIÓN BICICLETA</h5>
+                <button type="button " class="close " data-dismiss="modal " aria-label="Close ">
+          <span aria-hidden="true ">&times;</span>
+        </button>
+            </div>
+            <div class="modal-body ">
+                <div class="card " style="width: 18rem; ">
+                    <div class="card-body " *ngIf="mostrarPuesto ">
+                        <h6 class="card-subtitle mb-2 text-muted ">DATOS ESTUDIANTE</h6>
+                        <form>
+                            <div class="form-group ">
+                                <h6>Nombre</h6>
+                                <label> {{puestoSeleccionado.idEstudiante.nombreEst}}</label>
+                            </div>
+                            <div class="form-group ">
+                                <h6>Código</h6>
+                                <label> {{puestoSeleccionado.idEstudiante.codigoEst}}</label>
+                            </div>
+                            <h6 class="card-subtitle mb-2 text-muted ">DATOS PUESTO</h6>
+                            <div class="form-group ">
+                                <h6>Puesto</h6>
+                                <label> {{puestoSeleccionado.id}}</label>
+                            </div>
+                            <div class="form-group ">
+                                <h6>Parqueadero</h6>
+                                <label> {{puestoSeleccionado.idParqueadero.id}}</label>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="modal-footer ">
+                    <button type="button" class="btn btn-info" data-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- OCUPAR UN PUESTO-->
+
+<div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">INGRESAR BICICLETA</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+            </div>
+            <div class="modal-body">
+                <div class="card " style="width: 18rem; " *ngIf="mostrarIngresarBici ">
+                    <div class="card-body ">
+                        <h6 class="card-subtitle mb-2 text-muted ">DATOS ESTUDIANTES</h6>
+                        <form>
+                            <div class="form-group ">
+                                <label>Nombre</label>
+                                <input type="text " class="form-control " name="nombreIngreso " [(ngModel)]="nombreIngreso ">
+                            </div>
+                            <div class="form-group ">
+                                <label>Código</label>
+                                <input type="text " class="form-control " name="codigoIngreso " [(ngModel)]="codigoIngreso ">
+                            </div>
+                            <div class="form-group ">
+                                <label>Puesto</label>
+                                <input type="text " class="form-control " disabled [value]="puestoSeleccionado.id ">
+                            </div>
+                            <div class="form-group ">
+                                <label>Parqueadero</label>
+                                <input type="text " class="form-control " disabled [value]="puestoSeleccionado.idParqueadero.id ">
+                            </div>
+
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                <button type="button " class="btn btn-primary " (click)="ocuparPuesto() " data-dismiss="modal">Ingresar</button>
+            </div>
+        </div>
+    </div>
+</div>
